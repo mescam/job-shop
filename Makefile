@@ -1,5 +1,5 @@
 # here goes our ultimate C Makefile, just wait!
-CC		= clang
+CC	= clang
 CFLAGS	= -Wall -g -std=gnu99
 LFLAGS	= -lrt -lm
 LINKER	= clang -o
@@ -9,6 +9,8 @@ SRCDIR	= src
 OBJDIR	= obj
 HEADIR	= include
 BINDIR	= bin
+TEXDIR	= paper_pl
+TEXNAM	= paper_pl.tex
 
 SOURCES		:= $(wildcard $(SRCDIR)/*.c)
 INCLUDES	:= $(wildcard $(HEADIR)/*.h)
@@ -29,4 +31,8 @@ clean:
 	@rm -rf $(BINDIR)/$(TARGET)
 	@echo "Cleaned working directory"
 
-.PHONY:	all	clean
+tex:
+	@pdflatex -shell-escape -synctex=1 -interaction=nonstopmode -output-directory=$(TEXDIR) $(TEXDIR)/$(TEXNAM)
+	@echo "Compiled TeX file to PDF"
+
+.PHONY:	all clean tex
