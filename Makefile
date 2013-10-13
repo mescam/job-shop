@@ -9,7 +9,7 @@ SRCDIR	= src
 OBJDIR	= obj
 HEADIR	= include
 BINDIR	= bin
-TEXDIR	= paper_pl
+TEXDIR	= tex
 TEXNAM	= paper_pl.tex
 
 SOURCES		:= $(wildcard $(SRCDIR)/*.c)
@@ -23,6 +23,7 @@ $(BINDIR)/$(TARGET): $(OBJECTS)
 	@echo "Linking complete!"
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
+	@echo "CC $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
