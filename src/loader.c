@@ -25,14 +25,14 @@ void alloc_listing(instance *pi)
  * reads instance file with given func and returns complete struct for
  * scheduling algorithm
  */
-instance *load(const char* filename, format_reader reader)
+instance *load(const char* filename, format_reader reader, int n)
 {
     FILE *f = fopen(filename, "r");
     if (f == NULL) {
         fprintf(stderr, "Failed opening instance file - exiting.");
         exit(1);
     }
-    instance *pi = reader(f);
+    instance *pi = reader(f, n);
     fclose(f);
     return pi;
 }

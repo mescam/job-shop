@@ -19,11 +19,13 @@ void orlib_read_jobs(FILE *f, instance *pi)
     }
 }
 
-instance *orlib_loader(FILE *f)
+instance *orlib_loader(FILE *f, int n)
 {
-    instance* pi = create_instance();
+    instance *pi = create_instance();
     //read information about number of jobs and available machines
     fscanf(f, "%d %d", &(pi->jobs), &(pi->machines));
+    if (n != 0 && pi->jobs > n)
+        pi->jobs = n;
     alloc_listing(pi);
     orlib_read_jobs(f, pi);
     return pi;

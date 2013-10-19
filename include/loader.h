@@ -18,10 +18,10 @@ struct _instance {
 typedef struct _instance instance;
 
 
-typedef instance *(*format_reader)(FILE *f);
+typedef instance *(*format_reader)(FILE *f, int n);
 
 instance *create_instance();
 void alloc_listing(instance *pi);
-instance *load(const char* filename, format_reader reader);
+instance *load(const char* filename, format_reader reader, int n);
 void debug_print_as_orlib(instance *pi);
 #endif

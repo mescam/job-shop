@@ -5,7 +5,7 @@
 
 int main(int argc, const char *argv[])
 {
-    instance *pi = load(argv[1], &orlib_loader);
+    instance *pi = load(argv[1], &orlib_loader, 0);
     debug_print_as_orlib(pi);
     free(pi);
     return 0;
