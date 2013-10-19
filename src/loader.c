@@ -43,7 +43,7 @@ void debug_print_as_orlib(instance *pi)
     int i, j;
     for(i = 0; i < pi->jobs; i++) {
         for(j = 0; j < pi->machines; j++) {
-            printf("%d %d ", pi->listing[i][j].machine, pi->listing[i][j].time);
+            printf("%3d %3d ", pi->listing[i][j].machine, pi->listing[i][j].time);
         }
         printf("\n");
     }
