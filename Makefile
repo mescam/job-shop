@@ -1,6 +1,6 @@
 # here goes our ultimate C Makefile, just wait!
 CC	= clang
-CFLAGS	= -Wall -g -std=gnu99
+CFLAGS	= -Wall -g -std=gnu99 -I include/
 LFLAGS	= -lrt -lm
 LINKER	= clang -o
 
