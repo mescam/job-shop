@@ -4,7 +4,7 @@
 /*
  * allocates memory for our structure and returns pointer
  */
-instance* create_instance()
+instance *create_instance()
 {
     return malloc(sizeof(instance));
 }
@@ -22,10 +22,10 @@ void alloc_listing(instance *pi)
 }
 
 /*
- * reads instance file with given func and returns complete struct for scheduling
- * algorithm
+ * reads instance file with given func and returns complete struct for
+ * scheduling algorithm
  */
-instance* load(char* filename, format_reader reader)
+instance *load(const char* filename, format_reader reader)
 {
     FILE *f = fopen(filename, "r");
     if (f == NULL) {
@@ -35,4 +35,16 @@ instance* load(char* filename, format_reader reader)
     instance *pi = reader(f);
     fclose(f);
     return pi;
+}
+
+void debug_print_as_orlib(instance *pi)
+{
+    printf("%d %d\n", pi->jobs, pi->machines);
+    int i, j;
+    for(i = 0; i < pi->jobs; i++) {
+        for(j = 0; j < pi->machines; j++) {
+            printf("%d %d ", pi->listing[i][j].machine, pi->listing[i][j].time);
+        }
+        printf("\n");
+    }
 }

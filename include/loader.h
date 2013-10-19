@@ -20,8 +20,8 @@ typedef struct _instance instance;
 
 typedef instance *(*format_reader)(FILE *f);
 
-instance* create_instance();
+instance *create_instance();
 void alloc_listing(instance *pi);
-instance* load(char* filename, format_reader reader);
-
+instance *load(const char* filename, format_reader reader);
+void debug_print_as_orlib(instance *pi);
 #endif
