@@ -34,4 +34,3 @@ case "$option" in
     "3") eff2_test ;;
     *) echo "Something went wrong..." ;;
 esac
-
