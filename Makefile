@@ -36,4 +36,6 @@ tex:
 	@pdflatex -shell-escape -synctex=1 -interaction=nonstopmode -output-directory=$(TEXDIR) $(TEXDIR)/$(TEXNAM)
 	@echo "Compiled TeX file to PDF"
 
-.PHONY:	all clean tex
+tests:
+	@./tests/generate_tests.sh
+.PHONY: all clean tex tests

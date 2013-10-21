@@ -17,8 +17,9 @@ void alloc_listing(instance *pi)
 {
     int i;
     pi->listing = malloc(sizeof(task*) * pi->jobs);
-    for(i = 0; i < pi->machines; ++i)
+    for(i = 0; i < pi->jobs; ++i) {
         pi->listing[i] = malloc(sizeof(task) * pi->machines);
+    }
 }
 
 /*
@@ -43,7 +44,7 @@ void debug_print_as_orlib(instance *pi)
     int i, j;
     for(i = 0; i < pi->jobs; i++) {
         for(j = 0; j < pi->machines; j++) {
-            printf("%d %d ", pi->listing[i][j].machine, pi->listing[i][j].time);
+            printf("%3d %3d ", pi->listing[i][j].machine, pi->listing[i][j].time);
         }
         printf("\n");
     }
