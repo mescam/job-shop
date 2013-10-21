@@ -1,6 +1,9 @@
 #!/bin/bash
 function simple_test {
-    ./bin/jobshop tests/instances/simple-orlib/fs1
+    for i in tests/instances/simple-orlib/*; do
+        echo "Testing $i ..."
+        ./bin/jobshop -f $i -t orlib
+    done
     exit
 }
 

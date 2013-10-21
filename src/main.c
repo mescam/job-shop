@@ -45,8 +45,13 @@ int main(int argc, char **argv)
                 read_from_file = 1;
                 strcpy(filename, optarg);
                 break;
+
             case 'n':
                 n = strtol(optarg, &p, 10);
+                break;
+
+            case 'm':
+                measure_time = 1;
                 break;
         }
     }
