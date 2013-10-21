@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
 #include "loader.h"
 #include "orlib.h"
 #include "taillard.h"
 
-void print_program_info(const char *argv[]) {
+void print_program_info(char **argv) {
     printf("Job-Shop solving program\n");
     printf("Jakub Wozniak, Marcin Zaremba @ PUT\n");
     printf("Usage: %s type [filename [n]]\n", argv[0]);
@@ -14,33 +17,49 @@ void print_program_info(const char *argv[]) {
     printf("\tn - number of jobs to read from file\n");
 }
 
-int main(int argc, const char *argv[])
+int main(int argc, char **argv)
 {
-    format_reader type; //format of instance file
+    format_reader type = NULL; //format of instance file
     instance *pi; //pointer to the instance
     char *p; //helper for strotol
+    int c;
+    char filename[255];
+    char read_from_file = 0;
+    int n = 0; //how many jobs we have to read, default 0 - all
+    char measure_time = 0;
 
-    if (argc < 2) { //if there are not enough arguments passed
+    while ((c = getopt (argc, argv, "t:f:mn:")) != -1) {
+        switch (c) {
+            case 't':
+                if (strcmp("taillard", optarg) == 0)
+                    type = taillard_loader;
+                else if (strcmp("orlib", optarg) == 0)
+                    type = orlib_loader;
+                else {
+                    printf("Wrong format type\n");
+                    return 1;
+                }
+                break;
+
+            case 'f':
+                read_from_file = 1;
+                strcpy(filename, optarg);
+                break;
+            case 'n':
+                n = strtol(optarg, &p, 10);
+                break;
+        }
+    }
+
+    if (type == NULL) {
         print_program_info(argv);
         return 1;
     }
 
-    if (argv[1][0] != 'o' && argv[1][0] != 't') { //check for format
-        printf("Wrong type.\n");
-        return 1;
-    }
-    //choose our loader function
-    type = (argv[1][0] == 'o') ? orlib_loader : taillard_loader;
-
-    if (argc < 3) { //reading from stdin, calling loader func directly
+    if (read_from_file)
+        pi = load(filename, type, n);
+    else
         pi = type(stdin, 0);
-    } else {
-        int n = 0;
-        if (argc == 4) //checking for n requirements
-            n = strtol(argv[3], &p, 10);
-        pi = load(argv[2], type, n); //loading our instance
-    }
-
     //debug print
     debug_print_as_orlib(pi);
     return 0;
