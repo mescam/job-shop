@@ -17,8 +17,9 @@ void alloc_listing(instance *pi)
 {
     int i;
     pi->listing = malloc(sizeof(task*) * pi->jobs);
-    for(i = 0; i < pi->machines; ++i)
+    for(i = 0; i < pi->jobs; ++i) {
         pi->listing[i] = malloc(sizeof(task) * pi->machines);
+    }
 }
 
 /*
