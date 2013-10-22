@@ -4,8 +4,7 @@
 /*
  * allocates memory for our structure and returns pointer
  */
-instance *create_instance()
-{
+instance *create_instance() {
     return malloc(sizeof(instance));
 }
 
@@ -13,8 +12,7 @@ instance *create_instance()
  * allocates memory for listing field
  * based on jobs and machines
  */
-void alloc_listing(instance *pi)
-{
+void alloc_listing(instance *pi) {
     int i;
     pi->listing = malloc(sizeof(task*) * pi->jobs);
     for(i = 0; i < pi->jobs; ++i) {
@@ -22,12 +20,21 @@ void alloc_listing(instance *pi)
     }
 }
 
+
+void free_instance(instance *pi) {
+    int i;
+    for (i = 0; i < pi->jobs; ++i) {
+        free(pi->listing[i]);
+    }
+    free(pi->listing);
+    free(pi);
+}
+
 /*
  * reads instance file with given func and returns complete struct for
  * scheduling algorithm
  */
-instance *load(const char* filename, format_reader reader, int n)
-{
+instance *load(const char* filename, format_reader reader, int n) {
     FILE *f = fopen(filename, "r");
     if (f == NULL) {
         fprintf(stderr, "Failed opening instance file - exiting.");
@@ -38,8 +45,7 @@ instance *load(const char* filename, format_reader reader, int n)
     return pi;
 }
 
-void debug_print_as_orlib(instance *pi)
-{
+void debug_print_as_orlib(instance *pi) {
     printf("%d %d\n", pi->jobs, pi->machines);
     int i, j;
     for(i = 0; i < pi->jobs; i++) {

@@ -6,36 +6,37 @@
 #include "loader.h"
 #include "orlib.h"
 #include "taillard.h"
+#include "scheduler.h"
+
+#include "dummy_scheduler.h"
 
 void print_program_info(char **argv) {
     printf("Job-Shop solving program\n");
     printf("Jakub Wozniak, Marcin Zaremba @ PUT\n");
-    printf("Usage: %s -t type [-f filename] [-n number] [-m]\n", argv[0]);
+    printf("Usage: %s -t type -a algorithm [-f filename] [-n number] [-m]\n", argv[0]);
     printf("Where:\n");
     printf("\ttype - orlib or taillard\n");
     printf("\tfilename - path to instance (stdin if not given)\n");
     printf("\tnumber - number of jobs to read from file\n");
     printf("\t-m - add time of execution after results\n");
+    printf("\talgorithm - scheduler algorithm: n/a\n");
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     format_reader type = NULL; //format of instance file
     instance *pi; //pointer to the instance
-    char *p; //helper for strotol
-    int c;
-    char filename[255];
-    char read_from_file = 0;
-    int n = 0; //how many jobs we have to read, default 0 - all
-    char measure_time = 0;
+    scheduler_func scheduler = NULL;
+    int c, n = 0;
+    char filename[255], read_from_file = 0, measure_time = 0, *p;
+    double a_time;
 
-    while ((c = getopt (argc, argv, "t:f:mn:")) != -1) {
+    while ((c = getopt (argc, argv, "t:f:mn:a:")) != -1) {
         switch (c) {
             case 't':
                 if (strcmp("taillard", optarg) == 0)
-                    type = taillard_loader;
+                    type = &taillard_loader;
                 else if (strcmp("orlib", optarg) == 0)
-                    type = orlib_loader;
+                    type = &orlib_loader;
                 else {
                     printf("Wrong format type\n");
                     return 1;
@@ -54,10 +55,18 @@ int main(int argc, char **argv)
             case 'm':
                 measure_time = 1;
                 break;
+
+            case 'a':
+                if (strcmp("dummy", optarg) == 0) scheduler = &dummy_scheduler;
+                else {
+                    printf("Wrong scheduler algorithm\n");
+                    return 1;
+                }
+                break;
         }
     }
 
-    if (type == NULL) {
+    if (type == NULL || scheduler == NULL) {
         print_program_info(argv);
         return 1;
     }
@@ -66,7 +75,13 @@ int main(int argc, char **argv)
         pi = load(filename, type, n);
     else
         pi = type(stdin, 0);
-    //debug print
-    debug_print_as_orlib(pi);
+
+    sched_result *res = solve(pi, scheduler, &a_time);
+
+    print_result(res, pi);
+    free_result_struct(res, pi);
+    free_instance(pi);
+
+    if(measure_time) printf("%f\n", a_time);
     return 0;
 }
