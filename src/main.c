@@ -10,11 +10,12 @@
 void print_program_info(char **argv) {
     printf("Job-Shop solving program\n");
     printf("Jakub Wozniak, Marcin Zaremba @ PUT\n");
-    printf("Usage: %s type [filename [n]]\n", argv[0]);
+    printf("Usage: %s -t type [-f filename] [-n number] [-m]\n", argv[0]);
     printf("Where:\n");
-    printf("\ttype - o for orlib, t for taillard\n");
+    printf("\ttype - orlib or taillard\n");
     printf("\tfilename - path to instance (stdin if not given)\n");
-    printf("\tn - number of jobs to read from file\n");
+    printf("\tnumber - number of jobs to read from file\n");
+    printf("\t-m - add time of execution after results\n");
 }
 
 int main(int argc, char **argv)
