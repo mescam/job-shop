@@ -1,8 +1,12 @@
 #!/bin/bash
 function simple_test {
+    mkdir -p tests/output/simple-orlib
     for i in tests/instances/simple-orlib/*; do
         echo "Testing $i ..."
-        ./bin/jobshop -f $i -t orlib
+        x=`echo -n $i | cut -d'/' -f3`
+        ./bin/jobshop -f $i -t orlib > tests/output/simple-orlib/$x -a dummy
+        echo "Done $x... checking with chk_jsorl.exe"
+        wine tests/bin/chk_jsorl.exe $i tests/output/simple-orlib/$x
     done
     exit
 }
