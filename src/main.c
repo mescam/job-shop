@@ -9,6 +9,7 @@
 #include "scheduler.h"
 
 #include "dummy_scheduler.h"
+#include "greedy_scheduler.h"
 
 void print_program_info(char **argv) {
     printf("Job-Shop solving program\n");
@@ -58,6 +59,7 @@ int main(int argc, char **argv) {
 
             case 'a':
                 if (strcmp("dummy", optarg) == 0) scheduler = &dummy_scheduler;
+                else if(strcmp("greedy", optarg) == 0) scheduler = &greedy_scheduler;
                 else {
                     printf("Wrong scheduler algorithm\n");
                     return 1;
@@ -79,8 +81,8 @@ int main(int argc, char **argv) {
     sched_result *res = solve(pi, scheduler, &a_time);
 
     print_result(res, pi);
-    free_result_struct(res, pi);
-    free_instance(pi);
+    //free_result_struct(res, pi);
+    //free_instance(pi);
 
     if(measure_time) printf("%f\n", a_time);
     return 0;

@@ -5,6 +5,7 @@
 struct _task {
     int machine; //id of the machine
     int time; //duration
+    int job_id;
 };
 
 typedef struct _task task;

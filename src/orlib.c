@@ -3,17 +3,18 @@
 #include "loader.h"
 #include "orlib.h"
 
-void orlib_read_tasks(FILE *f, task* arr, int machines) {
+void orlib_read_tasks(FILE *f, task* arr, int machines, int job) {
     int i;
     for(i = 0; i < machines; i++) {
         fscanf(f, "%d %d", &(arr[i].machine), &(arr[i].time));
+        arr[i].job_id = job;
     }
 }
 
 void orlib_read_jobs(FILE *f, instance *pi) {
     int i;
     for(i = 0; i < pi->jobs; i++) {
-        orlib_read_tasks(f, pi->listing[i], pi->machines);
+        orlib_read_tasks(f, pi->listing[i], pi->machines, i);
     }
 }
 
