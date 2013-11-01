@@ -66,8 +66,7 @@ void greedy_check_done_tasks(task **machines, instance *pi, int *iterators) {
 }
 
 void greedy_scheduler(instance *pi, sched_result *result) {
-    //first, we need to keep machines states, so we have to create
-    //some array with FIFOs
+    //first, we need to keep machines states
     task **machines = malloc(sizeof(task*) * pi->machines);
     int i;
     for(i = 0; i < pi->machines; i++)
@@ -87,6 +86,6 @@ void greedy_scheduler(instance *pi, sched_result *result) {
     }
     result->scheduling_time = T;
     //cleaning
-    //free(machines);
-    //free(task_iterators);
+    free(machines);
+    free(task_iterators);
 }

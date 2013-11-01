@@ -2,7 +2,7 @@
 #include "loader.h"
 #include "taillard.h"
 
-#define TAILLARD_BUFF_MAX 16
+#define TAILLARD_BUFF_MAX 256
 
 // read one matrix
 void taillard_read_lines(FILE *f, instance *pi) {
@@ -24,6 +24,13 @@ void taillard_read_lines(FILE *f, instance *pi) {
     }
 }
 
+void taillard_fill_job_id(instance *pi) {
+    int i, j;
+    for(i = 0; i < pi->jobs; i++)
+        for(j = 0; j < pi->machines; j++)
+            pi->listing[i][j].job_id = i;
+}
+
 instance *taillard_loader(FILE *f, int n) {
     instance *pi = create_instance();
 
@@ -38,6 +45,9 @@ instance *taillard_loader(FILE *f, int n) {
 
     // read machines
     taillard_read_lines(f, pi);
+
+    //fill job_id
+    taillard_fill_job_id(pi);
 
     return pi;
 }

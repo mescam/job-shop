@@ -81,8 +81,8 @@ int main(int argc, char **argv) {
     sched_result *res = solve(pi, scheduler, &a_time);
 
     print_result(res, pi);
-    //free_result_struct(res, pi);
-    //free_instance(pi);
+    free_result_struct(res, pi);
+    free_instance(pi);
 
     if(measure_time) printf("%f\n", a_time);
     return 0;

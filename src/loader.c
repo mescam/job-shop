@@ -37,7 +37,7 @@ void free_instance(instance *pi) {
 instance *load(const char* filename, format_reader reader, int n) {
     FILE *f = fopen(filename, "r");
     if (f == NULL) {
-        fprintf(stderr, "Failed opening instance file - exiting.");
+        fprintf(stderr, "Failed opening instance file %s - exiting.\n", filename);
         exit(1);
     }
     instance *pi = reader(f, n);
