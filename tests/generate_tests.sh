@@ -22,25 +22,41 @@ function full_orlib_test {
     done
     exit
 }
+
 function eff1_test {
     x="tai20 tai21 tai22 tai23 tai24 tai25"
+    IFS=' '
     mkdir -p tests/output/tailard
     mkdir -p tests/output/eff1
     touch tests/output/eff1/data
-    echo $x > tests/output/eff1/data
-    echo "1591 2297 2099 2326 2223 2291" >> tests/output/eff1/data
-    z=""
+    touch tests/output/eff1/data2
+    echo -n "" > tests/output/eff1/data
+    echo -n "" > tests/output/eff1/data2
+    lbound="1318 1573 1542 1474 1606 1518"
+    ubound="1348 1642 1600 1557 1644 1595"
+    larr=($(echo $lbound))
+    uarr=($(echo $ubound))
+    j=0
     for i in $x; do
         echo "Testing... $i"
         ./bin/jobshop -f tests/instances/tailard/$i.txt -t taillard > tests/output/tailard/$i.txt -a greedy -m
         echo "Done $i"
-        z=z+`cat tests/output/tailard/$i.txt | tail -n 1`+" "
+        z=`cat tests/output/tailard/$i.txt | head -n 1`
+        a=`cat tests/output/tailard/$i.txt | tail -n 1`
+        echo "$i ${larr[$j]} ${uarr[$j]} $z" >> tests/output/eff1/data
+        echo "$i $a" >> tests/output/eff1/data2
+        j=`expr $j + 1`
     done
-    echo $z > tests/output/eff1/data
+    gnuplot tests/gnuplot/eff1-plot1.gplt
+    gnuplot tests/gnuplot/eff1-plot2.gplt
 }
 
 function eff2_test {
-    exit
+    for x in `seq 20`; do
+        echo "Testing tai25 for n=$x"
+        t=`./bin/jobshop -f tests/instances/tailard/tai25.txt -n $x -t taillard -a greedy -m | tail -n 1`
+        echo $t
+    done;
 }
 
 echo "*************************************************************************"

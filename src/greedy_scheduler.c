@@ -15,7 +15,7 @@ char greedy_are_we_ok(int *iterators, instance *pi) {
 }
 
 void greedy_feed_machines(instance *pi, int *iterators, task **machines,
-                          int T, sched_result *result) {
+                          long long int T, sched_result *result) {
     int i, j;
     for(i = 0; i < pi->machines; i++) { //for every machine
         if(machines[i] == NULL) { //if machine is in idle state
@@ -71,7 +71,7 @@ void greedy_scheduler(instance *pi, sched_result *result) {
     int i;
     for(i = 0; i < pi->machines; i++)
         machines[i] = NULL;
-    int T = 0; //time for our simulation
+    long long int T = 0; //time for our simulation
     //task iterators for every job
     int *task_iterators = calloc(pi->jobs, sizeof(int));
 
@@ -80,7 +80,7 @@ void greedy_scheduler(instance *pi, sched_result *result) {
         greedy_feed_machines(pi, task_iterators, machines, T, result);
         int t = greedy_nearest_task_finish(pi, machines);
         T += t;
-        //printf("Czas T=%d\n", T);
+        //printf("Czas T=%lld\n", T);
         greedy_time_shift(machines, pi, t);
         greedy_check_done_tasks(machines, pi, task_iterators);
     }

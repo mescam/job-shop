@@ -1,0 +1,5 @@
+set terminal pdfcairo
+set output 'eff1-2.pdf'
+set xlabel 'Instances'
+set ylabel 'Time [s]'
+plot 'tests/output/eff1/data2' using 2:xticlabels(1) w linespoints t 'Greedy heuristics'

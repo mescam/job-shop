@@ -1,0 +1,7 @@
+set terminal pdfcairo
+set output 'eff1-1.pdf'
+set xlabel 'Instances'
+set ylabel 'Schedule length'
+plot 'tests/output/eff1/data' using 2:xticlabels(1) w linespoints t 'Lower bound', \
+'tests/output/eff1/data' using 3:xticlabels(1) w linespoints t 'Upper bound',\
+'tests/output/eff1/data' using 4:xticlabels(1) w linespoints t 'Greedy heuristics'

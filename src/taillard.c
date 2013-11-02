@@ -27,8 +27,10 @@ void taillard_read_lines(FILE *f, instance *pi) {
 void taillard_fill_job_id(instance *pi) {
     int i, j;
     for(i = 0; i < pi->jobs; i++)
-        for(j = 0; j < pi->machines; j++)
+        for(j = 0; j < pi->machines; j++) {
             pi->listing[i][j].job_id = i;
+            pi->listing[i][j].machine -= 1; //we need machines counted from 0
+        }
 }
 
 instance *taillard_loader(FILE *f, int n) {

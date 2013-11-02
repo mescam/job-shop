@@ -27,11 +27,11 @@ int main(int argc, char **argv) {
     format_reader type = NULL; //format of instance file
     instance *pi; //pointer to the instance
     scheduler_func scheduler = NULL;
-    int c, n = 0;
+    int c, n = 0, d = 0;
     char filename[255], read_from_file = 0, measure_time = 0, *p;
     double a_time;
 
-    while ((c = getopt (argc, argv, "t:f:mn:a:")) != -1) {
+    while ((c = getopt (argc, argv, "t:f:mn:a:d")) != -1) {
         switch (c) {
             case 't':
                 if (strcmp("taillard", optarg) == 0)
@@ -65,6 +65,10 @@ int main(int argc, char **argv) {
                     return 1;
                 }
                 break;
+
+            case 'd':
+                d = 1;
+                break;
         }
     }
 
@@ -78,6 +82,12 @@ int main(int argc, char **argv) {
     else
         pi = type(stdin, 0);
 
+    if(d == 1) {
+        debug_print_as_orlib(pi);
+        return 0;
+    }
+    //debug_print_as_orlib(pi);
+    //return 0;
     sched_result *res = solve(pi, scheduler, &a_time);
 
     print_result(res, pi);
