@@ -128,5 +128,6 @@ Dla instancji tai25 przeprowadzono pomiar czasu wykonywania algorytmów dla $n=1
 Przypadek pesymistyczny (kiedy w każdej sprawdzanej chwili czasu kończy się tylko jedno zadanie) ma złożoność obliczeniową rzędu $O(mn^2)$, gdzie: $m$ --- liczba maszyn, $n$ --- liczba zleceń. W przypadku optymistycznym (wszystkie aktualnie przetwarzane zadania kończą się w tej samej chwili) uzyskujemy złożoność $O(mn)$. 
     
 \section{Wnioski}
-Jest chujowo, ale stabilnie.
+Zaproponowana heurystyka zachłanna generuje rozwiązania dopuszczalne, ale dalekie od optimum. Metoda ta nie korzysta z pełnej informacji odczytanej z pliku i nie przewiduje przyszłego wykorzystania maszyn celem zoptymalizowania obciążenia. Zaimplementowany algorytm jest symulacją pracy maszyn, gdzie kolejne zadania zgłaszają żądanie zasobów po zakończeniu przetwarzania ich poprzednika.\\
+Otrzymane w ten sposób rozwiązanie może posłużyć jako baza dla optymalizacji przy pomocy bardziej zaawansowanych algorytmów heurystycznych.
 \end{document}
