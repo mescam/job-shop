@@ -1,4 +1,4 @@
-set terminal pdfcairo
+set terminal pdfcairo enhanced mono
 set output 'eff1-1.pdf'
 set xlabel 'Instances'
 set ylabel 'Schedule length'

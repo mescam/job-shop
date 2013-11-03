@@ -24,7 +24,7 @@ function full_orlib_test {
 }
 
 function eff1_test {
-    x="tai20 tai21 tai22 tai23 tai24 tai25"
+    x="tai20 tai21 tai22 tai23 tai24 tai25 tai26 tai27 tai28 tai29 tai30"
     IFS=' '
     mkdir -p tests/output/tailard
     mkdir -p tests/output/eff1
@@ -32,8 +32,8 @@ function eff1_test {
     touch tests/output/eff1/data2
     echo -n "" > tests/output/eff1/data
     echo -n "" > tests/output/eff1/data2
-    lbound="1318 1573 1542 1474 1606 1518"
-    ubound="1348 1642 1600 1557 1644 1595"
+    lbound="1318 1573 1542 1474 1606 1518 1558 1617 1591 1525 1485"
+    ubound="1348 1642 1600 1557 1644 1595 1643 1680 1603 1625 1584"
     larr=($(echo $lbound))
     uarr=($(echo $ubound))
     j=0
@@ -52,11 +52,21 @@ function eff1_test {
 }
 
 function eff2_test {
+    mkdir -p tests/output/eff2
+    echo -n "" > tests/output/eff2/data
     for x in `seq 20`; do
+        licznik=0
         echo "Testing tai25 for n=$x"
-        t=`./bin/jobshop -f tests/instances/tailard/tai25.txt -n $x -t taillard -a greedy -m | tail -n 1`
-        echo $t
+        for i in `seq 1000`; do
+            ./bin/jobshop -f tests/instances/tailard/tai25.txt -n $x -t taillard -a greedy -m > temp
+            t=`tail -n 1 temp`
+            licznik=`perl -e "print $licznik+$t"`
+        done
+        t=`perl -e "print $licznik/1000"`
+        echo "$x $t" >> tests/output/eff2/data
     done;
+    rm temp
+    gnuplot tests/gnuplot/eff2-plot.gplt
 }
 
 echo "*************************************************************************"

@@ -1,8 +1,8 @@
 # here goes our ultimate C Makefile, just wait!
-CC	= clang
-CFLAGS	= -Wall -g -std=gnu99 -I include/
-LFLAGS	= -lrt -lm
-LINKER	= clang -o
+CC	= gcc
+CFLAGS	= -Wall -g -std=gnu99 -I include/ -lrt
+LFLAGS	= -Wl,--no-as-needed -lrt -lm
+LINKER	= gcc -o
 
 TARGET	= jobshop
 SRCDIR	= src

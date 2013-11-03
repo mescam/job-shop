@@ -1,4 +1,4 @@
-set terminal pdfcairo
+set terminal pdfcairo enhanced mono
 set output 'eff1-2.pdf'
 set xlabel 'Instances'
 set ylabel 'Time [s]'

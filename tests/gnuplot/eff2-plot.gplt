@@ -1,0 +1,7 @@
+set terminal pdfcairo enhanced mono
+set output 'eff2.pdf'
+set xlabel 'Number of jobs'
+set ylabel 'Time of execution [s]'
+set grid
+plot 'tests/output/eff2/data' u 1:2 w points t 'Greedy heuristics',\
+'tests/output/eff2/data' u 1:2 smooth bezier t 'Trendline'

@@ -6,10 +6,11 @@
 \usepackage{amssymb}
 \usepackage{titling}
 \usepackage{anysize}
-\usepackage{ppprog}
+\usepackage{parskip}
+\usepackage{graphicx}
 \usepackage[polish]{babel}
-
-
+\usepackage{float}
+\usepackage[figurename=Wykres]{caption}
 % some settings
 \setlength{\droptitle}{-2cm}
 \preauthor{}
@@ -25,19 +26,107 @@ jakub.l.wozniak@student.put.edu.pl & marcin.zaremba@student.put.edu.pl % takiego
 Wydział Informatyki Politechniki Poznańskiej
 \end{center}}
 \author{\authorthing}
-\date{XX xxx 2013}
+\date{8 listopada 2013}
 \postauthor{}
 \title{Job-Shop Scheduling\\Laboratorium Optymalizacji Kombinatorycznej}
 \marginsize{2cm}{2cm}{1cm}{1cm}
 
-
+\setlength{\parindent}{0pt}
 % document
 \begin{document}
 \maketitle
 \section{Wprowadzenie}
+\subsection{Opis problemu}
+Problem Job-Shop (JSP) jest problemem optymalizacji kobminatorycznej, który polega na szeregowaniu zadań (task) dla zleceń (job) przy wykorzystaniu ustalonej liczby maszyn. Każde zlecenie składa się z listy zadań, które muszą zostać wykonane w określonej kolejności. Każde zlecenie składa się z numeru maszyny, na której ma zostać wykonane oraz czasu przetwarzania.\\
+JSP należy do klasy problemów NP-trudnych, gdyż jest uogólnieniem problemu komiwojażera (który jest specjalnym przypadkiem JSP, gdzie liczba maszyn $m=1$, komiwojażer jest maszyną, a miasta, które odwiedza, to zlecenia).
+\subsection{Program testujący}
+\subsubsection{Opis}
+Aplikacja została napisana w języku C i wykorzystuje biblioteki dostępne w systemach z rodziny GNU/Linux. Skrypt automatyzujący testowanie i generowanie wykresów został napisany w języku BASH.
+\subsubsection{Kompilacja}
+Kompilacja została zautomatyzowana przy pomocy programu GNU Make. Aby skompilować program należy z poziomu konsoli wydać polecenie \textit{make}. Prawidłowe zakończenie procesu kompilacji zostanie zasygnalizowane komunikatem \textit{Linking complete!}.
+\subsubsection{Uruchomienie}
+Automatyczny system testowania należy uruchomić przez wydanie polecenia \textit{make tests}.\\
+Praca aplikacji jest sterowana przez przełączniki powszechnie stosowane w oprogramowaniu linuksowym. Przykładowe wywołanie \textit{bin/jobshop -t taillard -a greedy -f instances/tai10.txt -m} uruchomi program jobshop dla instancji Taillarda tai10.txt i wykona algorytm zachłanny (greedy). Wynik szeregowania zostanie zwrócony na standardowe wyjście, a jego ostatnią linią będzie czas działania algorytmu (przełącznik \textit{-m}). Pełna lista przełączników zostanie wyświetlona po wywołaniu programu bez żadnych parametrów.\\
+Zapisanie wyniku działania programu do pliku odbywa się przy pomocy operatora przekierowania strumienia standardowego wyjścia dostępnego w powłoce bash: \textit{bin/jobshop -a greedy (\ldots) \textgreater results.txt}.
 \section{Algorytm zachłanny}
-\section{Programowanie liniowe}
+Na potrzeby ćwiczenia opracowano i zaimplementowano heurystykę zachłanną generującą poprawne rozwiązania problemu szeregowania.
+
+\subsection{Opis algorytmu}
+Algorytm przechowuje w pamięci tablicę iteratorów reprezentujących aktualnie przetwarzane lub czekające na zasoby zadanie dla każdego ze zleceń oraz tablicę przechowującą aktualnie przetwarzane zadanie lub stan bezczynności dla każdej z maszyn. Dodatkowa zmienna $T=0$ określa chwilę czasu, w której analizujemy sytuację.
+
+
+Poszukiwanie rozwiązania opiera się na pętli z warunkiem wykonania wszystkich zleceń, która wykonuje następujące kroki:
+\begin{enumerate}
+    \item dla każdej z maszyn: jeżeli maszyna jest bezczynna to na podstawie tablicy iteratorów znajdź zadanie przeznaczone dla tej maszyny (i zapisz czas jego rozpoczęcia) lub pozostań w stanie bezczynności,
+    \item znajdź czas zadania, które kończy się najwcześniej i zapisz w zmiennej $t$,
+    \item wykonaj $T += t$ i dla każdego aktualnie przetwarzanego zadania zmniejsz pozostały czas wykonania o $t$,
+    \item jeżeli istnieje zadanie o pozostałym czasie wykonania równym 0, to usuń je z maszyny i przesuń iterator zlecenia o 1 w prawo.
+\end{enumerate}
+
+Po zakończeniu powyższej pętli długość uszeregowania znajduje się w zmiennej $T$. 
+
+\subsection{Instancja testowa}
+Algorytm został przetestowany przy pomocy dostarczonego oprogramowania \textit{chk\_jsorl.exe} dla wszystkich instancji w formacie orlib i Taillarda (po przekonwertowaniu do formatu orlib). Dla wszystkich rozwiązań oprogramowanie sprawdzające zwróciło wynik pozytywny.
+
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{ l l l l l l }
+            3 & 3 &&&& \\
+            0 & 2 & 1 & 2 & 2 & 2\\
+            1 & 2 & 0 & 4 & 2 & 1\\
+            2 & 4 & 1 & 2 & 0 & 1
+        \end{tabular}
+        \caption*{Tabela 1: przykładowa instancja testowa w formacie orlib}
+        \label{test1}
+    \end{center}
+\end{table}
+
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{ l l l }
+            7 & &\\
+            0 & 2 & 4\\
+            0 & 2 & 6\\
+            0 & 4 & 6
+        \end{tabular}
+        \caption*{Tabela 2: wynik uszeregowania algorytmem zachłannym dla instancji zaprezentowanej w tabeli 1}
+    \end{center}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{gantt.pdf}
+    \caption*{Rysunek 1: wykres Gantta dla uszeregowania podanego w tabeli 2}
+\end{figure}
+
 \section{Ocena efektywności}
+Dla instancji tai20 --- tai25 dokonano pomiaru czasu wykonywania i jakości uszeregowania, co przedstawiono na poniższych wykresach.
+
+\begin{figure}[H]
+\centering
+\includegraphics{eff1-1.pdf} 
+\caption{długość uszeregowania w porównaniu do wartości najlepszych granic dla instancji Taillarda}
+\label{eff11}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{eff1-2.pdf}
+    \caption{czas wykonywania algorytmu dla zadanych instancji}
+    \label{eff12}
+\end{figure}
+
+ 
+Dla instancji tai25 przeprowadzono pomiar czasu wykonywania algorytmów dla $n=1\ldots20$. Wyniki zaprezentowano na poniższym wykresie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{eff2.pdf}
+    \caption{czas wykonywania algorytmu dla instancji tai25 przy zmiennej liczbie wczytanych zleceń}
+\end{figure}
+
+Przypadek pesymistyczny (kiedy w każdej sprawdzanej chwili czasu kończy się tylko jedno zadanie) ma złożoność obliczeniową rzędu $O(mn^2)$, gdzie: $m$ --- liczba maszyn, $n$ --- liczba zleceń. W przypadku optymistycznym (wszystkie aktualnie przetwarzane zadania kończą się w tej samej chwili) uzyskujemy złożoność $O(mn)$. 
+    
 \section{Wnioski}
-\section{Bibliografia}
+Jest chujowo, ale stabilnie.
 \end{document}
