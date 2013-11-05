@@ -2,6 +2,7 @@
 #include <time.h>
 #include "scheduler.h"
 #include "loader.h"
+#include "utils.h"
 
 sched_result *get_result_struct(instance *pi) {
     int i;
