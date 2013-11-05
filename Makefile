@@ -1,7 +1,15 @@
 # here goes our ultimate C Makefile, just wait!
+OS := $(shell uname)
+
 CC	= gcc
 CFLAGS	= -Wall -g -std=gnu99 -I include/ -lrt
+
+ifeq ($(OS),Darwin)
+LFLAGS = -Wl, -lm
+else
 LFLAGS	= -Wl,--no-as-needed -lrt -lm
+endif
+
 LINKER	= gcc -o
 
 TARGET	= jobshop
