@@ -52,7 +52,6 @@ instance *taillard_loader(FILE *f, int n) {
     // save initial number of jobs
     int initial_jobs = pi->jobs;
 
-    printf("This is n: %d\n", n);
     if (n != 0 && pi->jobs > n)
         pi->jobs = n;
     alloc_listing(pi);

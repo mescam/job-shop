@@ -69,6 +69,19 @@ function eff2_test {
     gnuplot tests/gnuplot/eff2-plot.gplt
 }
 
+function full_taillard_test {
+    mkdir -p tests/output/tailard
+    for x in tests/instances/tailard/*; do
+        echo "Testing $x"
+        n=`echo -n $x | cut -d'/' -f4`
+        ./bin/jobshop -f $x -t taillard -a greedy > tests/output/tailard/$n
+        ./bin/jobshop -f $x -t taillard -a greedy -d > temp
+        echo "Done, running chk_jsorl.exe"
+        wine tests/bin/chk_jsorl.exe temp tests/output/tailard/$n
+    done
+    rm temp
+}
+
 echo "*************************************************************************"
 echo "* Welcome to Automated Testing System for Job-Shop Scheduling algorithm *"
 echo "*                Combinatorial Optimisation Laboratory                  *"
@@ -82,6 +95,8 @@ echo "1) Simple test (for algorithm testing only)"
 echo "2) Efficiency test (time and quality for ta20-ta25)"
 echo "3) Efficiency test 2 (time for n=1..20 ta25)"
 echo "4) Full orlib test"
+echo "5) Full taillard test"
+echo -n "Choice: "
 read option
 
 case "$option" in
@@ -89,5 +104,6 @@ case "$option" in
     "2") eff1_test ;;
     "3") eff2_test ;;
     "4") full_orlib_test ;;
+    "5") full_taillard_test ;;
     *) echo "Something went wrong..." ;;
 esac
