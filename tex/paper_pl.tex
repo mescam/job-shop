@@ -38,14 +38,14 @@ Wydział Informatyki Politechniki Poznańskiej
 \section{Wprowadzenie}
 \subsection{Opis problemu}
 Problem Job-Shop (JSP) jest problemem optymalizacji kobminatorycznej, który polega na szeregowaniu zadań (task) dla zleceń (job) przy wykorzystaniu ustalonej liczby maszyn. Każde zlecenie składa się z listy zadań, które muszą zostać wykonane w określonej kolejności, a każde zadanie składa się z numeru maszyny, na której ma zostać wykonane oraz czasu przetwarzania.\\
-JSP należy do klasy problemów NP-trudnych, gdyż jest uogólnieniem problemu komiwojażera (który jest specjalnym przypadkiem JSP, gdzie liczba maszyn $m=1$, komiwojażer jest maszyną, a miasta, które odwiedza, to zlecenia).
+% Tu byl bullshit o NP-hard na podstawie JSP w/ m=1 == TSP
+% prof. Drozdowski disapproves
 \subsection{Program testujący}
 \subsubsection{Opis}
 Aplikacja została napisana w języku C i wykorzystuje biblioteki dostępne w systemach z rodziny GNU/Linux. Skrypt automatyzujący testowanie i generowanie wykresów został napisany w języku BASH.
 \subsubsection{Kompilacja}
 Kompilacja została zautomatyzowana przy pomocy programu GNU Make. Aby skompilować program należy z poziomu konsoli wydać polecenie \textit{make}. Prawidłowe zakończenie procesu kompilacji zostanie zasygnalizowane komunikatem \textit{Linking complete!}.
 \subsubsection{Uruchomienie}
-Automatyczny system testowania należy uruchomić przez wydanie polecenia \textit{make tests}.\\
 Praca aplikacji jest sterowana przez przełączniki powszechnie stosowane w oprogramowaniu linuksowym. Przykładowe wywołanie \textit{bin/jobshop -t taillard -a greedy -f instances/tai10.txt -m} uruchomi program jobshop dla instancji Taillarda tai10.txt i wykona algorytm zachłanny (greedy). Wynik szeregowania zostanie zwrócony na standardowe wyjście, a jego ostatnią linią będzie czas działania algorytmu (przełącznik \textit{-m}). Pełna lista przełączników zostanie wyświetlona po wywołaniu programu bez żadnych parametrów.\\
 Zapisanie wyniku działania programu do pliku odbywa się przy pomocy operatora przekierowania strumienia standardowego wyjścia dostępnego w powłoce bash: \textit{bin/jobshop -a greedy (\ldots) \textgreater results.txt}.
 \section{Algorytm zachłanny}
